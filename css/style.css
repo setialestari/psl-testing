@@ -1111,7 +1111,7 @@ html.no-scroll { overflow: hidden; }
 
 /* ---------- Storefront hero (products.html) ---------- */
 .mk-banner {
-  position: relative; overflow: hidden; color: var(--white);
+  position: relative; color: var(--white);
   background: linear-gradient(115deg, var(--black) 0%, var(--dark) 58%, #2b1119 100%);
   padding: 56px 0 0;
 }
@@ -1128,7 +1128,7 @@ html.no-scroll { overflow: hidden; }
   position: absolute; top: 0; bottom: 0; right: 0; left: calc(50vw + var(--cw) / 2 - 24px - var(--card) - 110px); pointer-events: none;
   background: var(--gradient); opacity: .6; clip-path: polygon(90px 0, 100% 0, 100% 100%, 0 100%);
 }
-.mk-banner-grid { position: relative; z-index: 1; padding-bottom: 46px; display: grid; grid-template-columns: minmax(0, 1fr) var(--card); gap: var(--gap); align-items: center; }
+.mk-banner-grid { position: relative; z-index: 30; padding-bottom: 46px; display: grid; grid-template-columns: minmax(0, 1fr) var(--card); gap: var(--gap); align-items: center; }
 .mk-banner-copy { min-width: 0; max-width: 760px; }
 .mk-banner-copy .breadcrumb { margin-bottom: 18px; }
 .mk-banner h1 { color: var(--white); font-size: clamp(2rem, 3.9vw, 3.1rem); text-transform: uppercase; line-height: 1.12; margin-bottom: 16px; }
