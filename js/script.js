@@ -149,6 +149,57 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
+  /* Mobile "Show More" collapse — any grid marked data-collapse-mobile="N"
+     shows only its first N children on narrow screens, with a "Show More"
+     button revealing the rest. Prevents long card grids (8 construction
+     services, 14 brands, etc.) from forcing endless scroll on phones while
+     keeping every item present (and fully visible) on desktop.
+     Exposed on window so pages that render a grid's items dynamically
+     (e.g. products.html's brand grid, filled in after this file runs) can
+     call it again once their content exists — re-runs are safe, already-
+     wired grids are skipped via the data-collapse-ready flag. */
+  var MOBILE_COLLAPSE_BP = 640;
+  function setupMobileCollapse(root) {
+    (root || document).querySelectorAll('[data-collapse-mobile]').forEach(function (grid) {
+      if (grid.dataset.collapseReady) return;
+      var limit = parseInt(grid.getAttribute('data-collapse-mobile'), 10);
+      var items = Array.prototype.slice.call(grid.children);
+      if (!limit || items.length <= limit) return;
+      grid.dataset.collapseReady = '1';
+
+      var onDark = !!grid.closest('.why-section, .cta-banner, .site-footer');
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn ' + (onDark ? 'btn-outline' : 'btn-outline-dark') + ' btn-sm show-more-btn';
+      var hiddenCount = items.length - limit;
+      btn.textContent = 'Show ' + hiddenCount + ' More';
+
+      var wrap = document.createElement('div');
+      wrap.className = 'center show-more-wrap';
+      wrap.appendChild(btn);
+      grid.insertAdjacentElement('afterend', wrap);
+
+      var expanded = false;
+      function apply() {
+        var isMobile = window.innerWidth <= MOBILE_COLLAPSE_BP;
+        items.forEach(function (item, i) {
+          if (i < limit) { item.style.display = ''; return; }
+          item.style.display = (isMobile && !expanded) ? 'none' : '';
+        });
+        wrap.style.display = (isMobile && !expanded) ? 'flex' : 'none';
+      }
+      btn.addEventListener('click', function () {
+        expanded = true;
+        items.slice(limit).forEach(function (item) { item.classList.add('in'); }); // bypass reveal-on-scroll for now-visible items
+        apply();
+      });
+      apply();
+      window.addEventListener('resize', apply);
+    });
+  }
+  window.PSL_setupMobileCollapse = setupMobileCollapse;
+  setupMobileCollapse(document);
+
   /* Contact form (client-side only — no backend wired up yet) */
   var form = document.getElementById('contact-form');
   if (form) {

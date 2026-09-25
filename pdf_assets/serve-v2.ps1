@@ -1,5 +1,5 @@
 $root = "D:\User\Desktop\Claude\psl-website-v2"
-$port = 8082
+$port = 8090
 $listener = New-Object System.Net.HttpListener
 $listener.Prefixes.Add("http://localhost:$port/")
 $listener.Start()
